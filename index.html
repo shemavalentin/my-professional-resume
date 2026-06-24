@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud & DevOps Engineer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Header / Profile Section */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        .profile-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-title h2 {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 5px;
+        }
+
+        .contact-info {
+            text-align: right;
+            display: grid;
+            gap: 8px;
+        }
+
+        .contact-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .contact-item i {
+            color: var(--accent-blue);
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .contact-item:hover {
+            color: var(--text-main);
+        }
+
+        /* Two Column Layout */
+        .resume-body {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Left Column Styles */
+        .summary-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skill-badge:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .cert-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--accent-green);
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .cert-card p {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .cert-card span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Right Column Styles (Timeline & Projects) */
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            border-left: 2px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            border: 2px solid var(--bg-color);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .job-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .job-company {
+            color: var(--accent-green);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .job-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .job-details {
+            margin-top: 8px;
+            padding-left: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .job-details li {
+            margin-bottom: 6px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-blue);
+        }
+
+        .project-card h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .project-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .project-tags {
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .contact-info {
+                text-align: left;
+            }
+
+            .resume-body {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div class="profile-title">
+                <h1>SHEMA Valentin</h1>
+                <h2>Cloud & DevOps Engineer (3+ Years Experience)</h2>
+            </div>
+            <div class="contact-info">
+                <a href="mailto:alex.mercer@email.com" class="contact-item"><i
+                        class="fa-solid fa-envelope"></i>alex.mercer@email.com</a>
+                <a href="tel:+1234567890" class="contact-item"><i class="fa-solid fa-phone"></i>+1 (234) 567-890</a>
+                <a href="https://linkedin.com/in/username" target="_blank" class="contact-item"><i
+                        class="fa-brands fa-linkedin"></i>linkedin.com/in/username</a>
+                <a href="https://github.com/username" target="_blank" class="contact-item"><i
+                        class="fa-brands fa-github"></i>github.com/username</a>
+            </div>
+        </header>
+
+        <div class="resume-body">
+
+            <div class="left-col">
+                <section>
+                    <h3><i class="fa-solid fa-user"></i> Profile</h3>
+                    <p class="summary-text">
+                        Dynamic Cloud & DevOps Engineer with 3 years of hands-on experience in automating, scaling, and
+                        optimizing mission-critical cloud infrastructure. Proficient in Infrastructure as Code (IaC),
+                        robust CI/CD pipeline development, and container orchestration. Passionate about eliminating
+                        deployment bottlenecks and driving system reliability.
+                    </p>
+                </section>
+
+                <section>
+                    <h3><i class="fa-solid fa-gear"></i> Technical Skills</h3>
+                    <div class="skills-container">
+                        <span class="skill-badge">AWS / Azure</span>
+                        <span class="skill-badge">Terraform</span>
+                        <span class="skill-badge">Docker</span>
+                        <span class="skill-badge">Kubernetes</span>
+                        <span class="skill-badge">GitHub Actions</span>
+                        <span class="skill-badge">AWS</span>
+                        <span class="skill-badge">Jenkins</span>
+                        <span class="skill-badge">Linux / Bash</span>
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">Ansible</span>
+                        <span class="skill-badge">Prometheus</span>
+                        <span class="skill-badge">Grafana</span>
+                        <span class="skill-badge">Git</span>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fa-solid fa-award"></i> Certifications</h3>
+                    <div class="cert-card">
+                        <p>AWS Certified Solutions Architect</p>
+                        <span>Associate | 2025</span>
+                    </div>
+                    <div class="cert-card">
+                        <p>Certified Kubernetes Administrator (CKA)</p>
+                        <span>CNCF | 2025</span>
+                    </div>
+                    <div class="cert-card">
+                        <p>HashiCorp Certified: Terraform</p>
+                        <span>Associate | 2024</span>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fa-solid fa-graduation-cap"></i> Education</h3>
+                    <div class="cert-card" style="border-left-color: var(--accent-blue);">
+                        <p>B.S. in Computer Science</p>
+                        <span>Tech University | 2019 - 2023</span>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-col">
+                <section>
+                    <h3><i class="fa-solid fa-briefcase"></i> Experience</h3>
+
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <span class="job-title">Cloud & DevOps Engineer</span>
+                            <span class="job-date">Jan 2025 - Present</span>
+                        </div>
+                        <div class="job-company">Nexus Cloud Solutions</div>
+                        <ul class="job-details">
+                            <li>Designed and maintained production-grade AWS infrastructure using <b>Terraform</b>,
+                                reducing environment provisioning time by 45%.</li>
+                            <li>Built and optimized multi-stage <b>Docker</b> images orchestrated across <b>Amazon EKS
+                                    (Kubernetes)</b> clusters, improving application uptime to 99.95%.</li>
+                            <li>Implemented end-to-end <b>GitHub Actions</b> CI/CD workflows that fully automated
+                                testing, security scanning, and deployment.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <span class="job-title">Associate DevOps Engineer</span>
+                            <span class="job-date">June 2023 - Dec 2024</span>
+                        </div>
+                        <div class="job-company">Stratum Systems</div>
+                        <ul class="job-details">
+                            <li>Managed and monitored microservices architecture using <b>Prometheus and Grafana</b>,
+                                reducing Mean Time to Resolution (MTTR) by 30%.</li>
+                            <li>Automated configuration management and system updates across 100+ Linux servers using
+                                <b>Ansible</b>.</li>
+                            <li>Maintained legacy <b>Jenkins</b> pipelines, migrating 15+ core applications into modern,
+                                declarative pipeline structures.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fa-solid fa-code-branch"></i> Key Projects</h3>
+                    <div class="project-grid">
+                        <div class="project-card">
+                            <h4>GitOps EKS Infrastructure</h4>
+                            <p>Architected a fully automated, scalable EKS cluster environment using Terraform and
+                                ArgoCD for continuous delivery.</p>
+                            <span class="project-tags">AWS • Terraform • ArgoCD • EKS</span>
+                        </div>
+                        <div class="project-card">
+                            <h4>Zero-Downtime CI/CD</h4>
+                            <p>Designed a zero-downtime blue/green deployment strategy using GitHub Actions and AWS
+                                Application Load Balancers.</p>
+                            <span class="project-tags">GitHub Actions • AWS ALB • Docker</span>
+                        </div>
+                        <div class="project-card">
+                            <h4>Centralized Logging Grid</h4>
+                            <p>Deployed a comprehensive cluster monitoring tool stack to track metrics and parse live
+                                logs seamlessly.</p>
+                            <span class="project-tags">Prometheus • Grafana • Loki</span>
+                        </div>
+                        <div class="project-card">
+                            <h4>Serverless API Pipeline</h4>
+                            <p>Configured an event-driven automation framework to securely scale down idle environments
+                                and cut cloud spend.</p>
+                            <span class="project-tags">Python • AWS Lambda • EventBridge</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
