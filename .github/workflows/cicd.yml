@@ -1,23 +1,52 @@
-name: My first pipeline
+name: Build and Push to ECR
+
+# This file defines one job called build_scan. It runs when code is pushed to the main branch.
 
 on:
   push:
+    # Pull_request:
+    #     branches: ['main', 'dev']
     branches: ["main"]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest # macos-latest, windows-latest
-    steps:
-      - name: Clone the code
-        uses: actions/checkout@v4
-      - name: Build image
-        run: |
-          docker build -t valen1/cicd-portfolio .
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
 
-      - name: Docker login
-        uses: docker/login-action@v3
+jobs:
+  build_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          username: valen1
-          password: ${{ secrets.DOCKER_PASS }}
-          name: Push image
-          run: docker push valen1/cicd-portfolio
+          scan-type: "fs"
+          format: "HIGH, CRITICAL"
+          exit-code: "1"
+
+      - name: Build Docker image
+        run: docker build -t ${{secrets.ECR_REPO}}/my-repo:latest .
+      - name: Scan image with Trivy 
+        uses: aquasecurity/trivy-action@0
+        with:
+          image-ref: ${{ secrets.ECR_REPO }}/my-repo:latest
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push Docker image to Amazon ECR
+        run: docker push ${{ secrets.ECR_REPO }}/my-repo:latest
