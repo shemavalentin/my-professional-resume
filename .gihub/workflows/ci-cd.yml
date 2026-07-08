@@ -8,6 +8,11 @@ on:
     #     branches: ['main', 'dev']
     branches: ["main"]
 
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
 jobs:
   build_scan:
     runs-on: ubuntu-latest
