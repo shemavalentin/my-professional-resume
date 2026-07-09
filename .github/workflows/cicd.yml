@@ -29,8 +29,8 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t ${{secrets.ECR_REPO}}/my-repo:latest .
-      - name: Scan image with Trivy 
-        uses: aquasecurity/trivy-action@0
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ secrets.ECR_REPO }}/my-repo:latest
           format: table
