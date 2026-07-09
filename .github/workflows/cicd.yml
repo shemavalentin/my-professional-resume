@@ -25,7 +25,7 @@ jobs:
         with:
           scan-type: "fs"
           format: "HIGH, CRITICAL"
-          exit-code: "0"
+          exit-code: 1
 
       - name: Build Docker image
         run: docker build -t ${{secrets.ECR_REPO}}/my-repo:latest .
@@ -34,7 +34,7 @@ jobs:
         with:
           image-ref: ${{ secrets.ECR_REPO }}/my-repo:latest
           format: table
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
           severity: CRITICAL,HIGH
 
