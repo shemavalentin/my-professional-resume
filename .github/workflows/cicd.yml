@@ -40,4 +40,4 @@ jobs:
 
         # After scanning the docker image we now need to push the imaage to AWS ECR. Before we can push the image to ECR we need to login to ECR using the AWS CLI.
       - name: push Image to ECR
-        run: echo"pushing image to ECR"
+        run: echo "pushing image to ECR"
