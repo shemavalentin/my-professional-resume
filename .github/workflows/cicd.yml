@@ -1,0 +1,76 @@
+name: Build and Push to ECR
+
+on:
+  push:
+    # pull_requests:
+    #     branches: ['main', 'dev']
+    branches: ["main"]
+
+# Giving the workflow permissions to access the repository and perform actions on it.
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  actions: write
+
+# Declaring the Jobs to be run in the workflow
+jobs:
+  build_scan: 
+    name: Build and Scan Docker Image
+    runs-on: ubuntu-latest
+
+    steps: #Where we start to declare the steps to be run in the job.
+      - name: Checkout Code
+        uses: actions/checkout@v7 # Code that tells the workflow to checkout(downloading and cloning ) the code from the repository.
+
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: "fs"
+          severity: CRITICAL,HIGH
+          exit-code: 1
+
+      # Onother step
+      - name: Build Docker Image
+        run: docker build -t ${{secrets.ECR_REPO}}/my-repo:latest .
+
+        #After building the docker image we now need to scan the image for vulnerabilities using Trivy.
+      - name: Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{secrets.ECR_REPO}}/my-repo:latest
+          format: table
+          scan-type: "image"
+          exit-code: 0
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+        with:
+          role-to-assume: ${{secrets.AWS_ROLE}}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push Docker Image to Amazon ECR
+        run: docker push ${{secrets.ECR_REPO}}/my-repo:latest
+
+
+    ## Adding another job to the workflow to deploy the docker image which is now in ECR to ECS.
+  Deploy_to_ECS:
+    needs: build_scan
+    name: Deploy to Amazon ECS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.AWS_ROLE}}
+          aws-region: us-east-1
+
+      - name: Deploy to Amazon ECS
+        run: echo "Deploying to Amazon ECS..."
