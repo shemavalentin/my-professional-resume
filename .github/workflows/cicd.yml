@@ -62,6 +62,7 @@ jobs:
 
     ## Adding another job to the workflow to deploy the docker image which is now in ECR to ECS.
   Deploy_to_ECS:
+    needs: build_scan
     name: Deploy to Amazon ECS
     runs-on: ubuntu-latest
     steps:
